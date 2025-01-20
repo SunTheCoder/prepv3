@@ -2,8 +2,6 @@ import express, { Request, Response, NextFunction } from "express"
 import bcrypt from "bcryptjs"
 import JWT from "jsonwebtoken"
 import User from "../models/user"
-import { error } from "console"
-
 
 const router = express.Router()
 
