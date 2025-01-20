@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { UpdateUser } from "../utils/api";
 import { useUserContext } from "../context/UserContext";
-import { handleInputChange } from "../utils/formHelper";
 
 const Profile = () => {
     const { user, setUser } = useUserContext();
