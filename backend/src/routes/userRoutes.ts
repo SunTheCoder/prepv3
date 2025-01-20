@@ -66,6 +66,11 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction): P
     }
 })
 
+router.post("/logout", (req: Request, res: Response) => {
+    res.clearCookie("token", { httpOnly: true, sameSite: "strict", secure: true });
+    res.json({ message: "Logged out successfully!" });
+});
+
 router.get("/", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const users = await User.findAll()
@@ -81,6 +86,29 @@ router.get("/", async (req: Request, res: Response, next: NextFunction): Promise
         next(error)
     }
 })
+
+router.get("/auth", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+        const token = req.cookies.token;
+
+        if (!token) {
+            res.status(401).json({ error: "Not authenticated" });
+            return;
+        }
+
+        const decoded: any = JWT.verify(token, process.env.JWT_SECRET!);
+        const user = await User.findByPk(decoded.id, { attributes: ["id", "name", "username", "email"] });
+
+        if (!user) {
+            res.status(401).json({ error: "User not found" });
+            return;
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(401).json({ error: "Invalid token" });
+    }
+});
 
 router.get("/:id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { LoginUser } from "../utils/api"
 
 
-const Login = () => {
+const Login = ({ setUser }) => {
     const [form, setForm] = useState({ username: "", password: ""})
     const [message, setMessage] = useState("")
 
@@ -15,10 +15,11 @@ const Login = () => {
         e.preventDefault()
         try {
             const data = await LoginUser(form)
-
+            
             if (data.error) {
                 setMessage("Login failed " + data.error)
             } else {
+                setUser(data);
                 setMessage("Login Successful")
             }
 
