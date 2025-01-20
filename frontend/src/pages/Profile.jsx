@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UpdateUser } from "../utils/api";
 import { useUserContext } from "../context/UserContext";
+import UsersList from "../components/UsersList";
 
 const Profile = () => {
     const { user, setUser } = useUserContext();
@@ -59,6 +60,8 @@ const Profile = () => {
                 />
                 <button type="submit">Update</button>
             </form>
+
+            <UsersList/>
             <p>{message}</p>
         </>
     );

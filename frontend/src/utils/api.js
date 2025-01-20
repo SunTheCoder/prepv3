@@ -41,6 +41,30 @@ export const checkAuth = async () => {
     return user || null; // ✅ Ensures a valid object is returned
 }
 
+//GET ALL USERS FUNC & THEN COMPONENT TO BE IN PROFILE FOR MAP PRACTICE
+
+export const GetAllUsers = async () => {
+    try {
+        const response = await fetch(`${USER_URL}/`, { 
+            method: "GET",
+            headers: { "Content-Type": "application/json" }, 
+            credentials: "include"
+        });
+
+        if (!response.ok) {
+            const errorMessage = await response.text(); // ✅ Get response text for better debugging
+            throw new Error(`Failed to fetch users: ${response.status} - ${errorMessage}`);
+        }
+
+        return await response.json(); // ✅ Ensure JSON parsing is safe
+
+    } catch (error) {
+        console.error("Error fetching users:", error.message);
+        throw error; // ✅ Re-throw error for better handling in components
+    }
+};
+
+
 export const UpdateUser = async (userData) => {
     const response = await fetch(`${USER_URL}/${userData.id}`, {
         method: "PUT",
