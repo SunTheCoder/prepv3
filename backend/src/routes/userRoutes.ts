@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction } from "express"
+import { JwtPayload } from "jsonwebtoken"; // ✅ Import JwtPayload
 import bcrypt from "bcryptjs"
 import JWT from "jsonwebtoken"
 import User from "../models/user"
+
 
 const router = express.Router()
 
@@ -55,7 +57,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction): P
             return;
         }
 
-        const token = JWT.sign({ is: user.id}, process.env.JWT_SECRET as string, { expiresIn: "1h" })
+        const token = JWT.sign({ id: user.id}, process.env.JWT_SECRET as string, { expiresIn: "1h" })
 
         res.cookie("token", token, {httpOnly: true, secure: true, sameSite: "strict"})
         res.status(200).json({message: "Logged in successfully", token})
@@ -87,16 +89,25 @@ router.get("/", async (req: Request, res: Response, next: NextFunction): Promise
     }
 })
 
-router.get("/auth", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.get("/auth", async (req: Request, res: Response): Promise<void> => {
     try {
         const token = req.cookies.token;
-
         if (!token) {
             res.status(401).json({ error: "Not authenticated" });
             return;
         }
 
-        const decoded: any = JWT.verify(token, process.env.JWT_SECRET!);
+        // ✅ Decode token and explicitly type it as JwtPayload
+        const decoded = JWT.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+
+        console.log("Decoded Token:", decoded); // ✅ Debugging
+
+        if (!decoded.id) { // ✅ Ensure id exists
+            res.status(401).json({ error: "Invalid token payload" });
+            return;
+        }
+
+        // ✅ Fix TypeScript error by ensuring `id` is always a string
         const user = await User.findByPk(decoded.id, { attributes: ["id", "name", "username", "email"] });
 
         if (!user) {
@@ -106,9 +117,11 @@ router.get("/auth", async (req: Request, res: Response, next: NextFunction): Pro
 
         res.json(user);
     } catch (error) {
+        console.error("Token verification error:", error);
         res.status(401).json({ error: "Invalid token" });
     }
 });
+
 
 router.get("/:id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {

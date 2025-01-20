@@ -24,13 +24,21 @@ export const LoginUser = async (userData) => {
 }
 
 export const checkAuth = async () => {
-    const response = await fetch(`${USER_URL}/auth`, { credentials: "include" });
+    const response = await fetch(`${USER_URL}/auth`, {
+        method: "GET",
+        headers:  {"Content-Type": "application/json"},
+        credentials: "include" // ✅ Ensures cookies are sent
+
+    });
 
     if (!response.ok) {
         return null; // User is not authenticated
     }
 
-    return response.json();
+    const user = await response.json();
+    console.log("Received User:", user); // ✅ Debugging response
+
+    return user || null; // ✅ Ensures a valid object is returned
 }
 
 

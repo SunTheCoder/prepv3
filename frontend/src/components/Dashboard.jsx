@@ -2,14 +2,22 @@ import { LogoutUser } from "../utils/api";
 
 
 
-const Dashboard = () => {
+const Dashboard = ({ setUser }) => {
 
-    function handleLogout() {
-        LogoutUser().then(() => window.location.reload());
+    const handleLogout = async () =>  {
+        try {
+            await LogoutUser();
+            setUser(null); // ✅ Clears user state, triggering a redirect to Login
+        } catch (err) {
+            console.error("Logout failed:", err);
+        }
     }
     
     return (
-    <button onClick={handleLogout}>Logout</button>
+        <>
+            
+            <button onClick={handleLogout}>Logout</button>
+        </>
     )
     
 }

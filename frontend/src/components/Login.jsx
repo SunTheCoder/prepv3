@@ -15,11 +15,11 @@ const Login = ({ setUser }) => {
         e.preventDefault()
         try {
             const data = await LoginUser(form)
+            setUser(data);
             
             if (data.error) {
                 setMessage("Login failed " + data.error)
             } else {
-                setUser(data);
                 setMessage("Login Successful")
             }
 
