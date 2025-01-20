@@ -60,7 +60,12 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction): P
         const token = JWT.sign({ id: user.id}, process.env.JWT_SECRET as string, { expiresIn: "1h" })
 
         res.cookie("token", token, {httpOnly: true, secure: true, sameSite: "strict"})
-        res.status(200).json({message: "Logged in successfully", token})
+        res.status(200).json({message: "Logged in successfully", token, user: {
+                                                                            id: user.id,
+                                                                            name: user.name,
+                                                                            username: user.username,
+                                                                            email: user.email
+                                                                        }})
 
 
     } catch (error) { 

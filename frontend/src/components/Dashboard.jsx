@@ -2,7 +2,7 @@ import { LogoutUser } from "../utils/api";
 
 
 
-const Dashboard = ({ setUser }) => {
+const Dashboard = ({ user, setUser }) => {
 
     const handleLogout = async () =>  {
         try {
@@ -15,7 +15,11 @@ const Dashboard = ({ setUser }) => {
     
     return (
         <>
-            
+            {user ? (
+            <h2>Welcome, {user?.username}!</h2>
+            ) : (
+            <h2>Welcome!</h2>    
+            )}
             <button onClick={handleLogout}>Logout</button>
         </>
     )

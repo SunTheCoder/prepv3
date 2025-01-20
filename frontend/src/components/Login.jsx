@@ -15,7 +15,8 @@ const Login = ({ setUser }) => {
         e.preventDefault()
         try {
             const data = await LoginUser(form)
-            setUser(data);
+            console.log("DATA", data)
+            setUser(data.user);
             
             if (data.error) {
                 setMessage("Login failed " + data.error)

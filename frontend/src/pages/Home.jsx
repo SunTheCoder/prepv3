@@ -30,8 +30,9 @@ const Home = () => {
     return (
         <div>
             <h2>HOME</h2>
-            <h2>Welcome, {user?.username}!</h2>
+
             
+
             <SignUp/>
             {user ? <Dashboard user={user} setUser={setUser} /> : <Login setUser={setUser} />} 
             {/* ✅ Pass setUser to Login */}
