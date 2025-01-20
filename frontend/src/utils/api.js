@@ -41,6 +41,22 @@ export const checkAuth = async () => {
     return user || null; // ✅ Ensures a valid object is returned
 }
 
+export const UpdateUser = async (userData) => {
+    const response = await fetch(`${USER_URL}/${userData.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+        credentials: "include"
+    })
+
+    if (!response.ok) {
+        throw new Error(`Failed to update user: ${response.statusText}`);
+    }
+
+
+    return response.json()
+}
+
 
 export const LogoutUser = async () => {
     const response = await fetch(`${USER_URL}/logout`, {

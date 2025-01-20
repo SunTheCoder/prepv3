@@ -1,10 +1,13 @@
 import { useState } from "react"
 import { LoginUser } from "../utils/api"
+import { useUserContext } from "../context/UserContext";
 
 
-const Login = ({ setUser }) => {
+
+const Login = () => {
     const [form, setForm] = useState({ username: "", password: ""})
     const [message, setMessage] = useState("")
+    const { setUser } = useUserContext(); // ✅ Get setUser from context
 
 
     const handleChange = (e) => {

@@ -151,7 +151,7 @@ router.get("/:id", async (req: Request, res: Response, next: NextFunction): Prom
     }
 })
 
-router.put("/id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.put("/:id", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { name, username, bio } = req.body
         const { id } = req.params
