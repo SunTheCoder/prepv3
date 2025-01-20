@@ -64,7 +64,8 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction): P
                                                                             id: user.id,
                                                                             name: user.name,
                                                                             username: user.username,
-                                                                            email: user.email
+                                                                            email: user.email,
+                                                                            bio: user.bio
                                                                         }})
 
 
@@ -113,7 +114,7 @@ router.get("/auth", async (req: Request, res: Response): Promise<void> => {
         }
 
         // ✅ Fix TypeScript error by ensuring `id` is always a string
-        const user = await User.findByPk(decoded.id, { attributes: ["id", "name", "username", "email"] });
+        const user = await User.findByPk(decoded.id, { attributes: ["id", "name", "username", "email", "bio"] });
 
         if (!user) {
             res.status(401).json({ error: "User not found" });

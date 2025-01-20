@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { LoginUser } from "../utils/api"
 import { useUserContext } from "../context/UserContext";
+import { useNavigate } from "react-router";
 
 
 
@@ -8,6 +9,7 @@ const Login = () => {
     const [form, setForm] = useState({ username: "", password: ""})
     const [message, setMessage] = useState("")
     const { setUser } = useUserContext(); // ✅ Get setUser from context
+    const navigate = useNavigate()
 
 
     const handleChange = (e) => {
@@ -20,6 +22,8 @@ const Login = () => {
             const data = await LoginUser(form)
             console.log("DATA", data)
             setUser(data.user);
+
+            navigate("/profile")
             
             if (data.error) {
                 setMessage("Login failed " + data.error)

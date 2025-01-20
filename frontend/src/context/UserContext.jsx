@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 const USER_URL = import.meta.env.VITE_BACKEND_USER_URL
 
-
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
